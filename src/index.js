@@ -1,12 +1,12 @@
-// @flow
-import React, { PropTypes } from 'react';
+import reducer from './reducer';
+import Provider from './Provider';
 
-const Starter = ({ title }: { title: string }) => (
-  <div>
-    <h1>{title}</h1>
-  </div>
-);
+const factory = props => {
+  return {
+    Name: 'nextLayoutState',
+    reducer: reducer(props.layoutState),
+    Provider
+  };
+}
 
-export const OtherComp = () => <div>Hello there!</div>;
-
-export default Starter;
+export default factory;

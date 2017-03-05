@@ -1,14 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import Starter from '../src/index';
+import factory from '../src/index';
 
-test('Starter has text', () => {
-
-  const starter = shallow(
-    <Starter />
-  );
-
-  expect(starter.text()).toEqual('React Component Boilerplate');
-  
-});
+describe('Plugin', () => {
+  it('returns a function, that when called with props returns the plugin object', () => {
+    const plugin = factory({ layoutState: {} });
+    expect(plugin.Name).toEqual('nextLayoutState');
+    expect(plugin.reducer).not.toBeUndefined();
+    expect(plugin.Provider).not.toBeUndefined();
+  })
+})
