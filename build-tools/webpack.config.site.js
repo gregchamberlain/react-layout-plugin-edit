@@ -5,7 +5,7 @@ module.exports = {
   entry: './site/src/index.js',
 
   output: {
-    path: path.join(__dirname, 'site', 'dist'),
+    path: './site/dist/bundle.js',
     filename: 'bundle.js',
   },
 

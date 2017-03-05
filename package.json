@@ -1,5 +1,5 @@
 {
-  "name": "react-component-boilerplate",
+  "name": "react-layout-plugin-edit",
   "version": "0.1.0",
   "description": "A simple responsive sidebar component for React",
   "keywords": [
@@ -14,20 +14,20 @@
     "test": "jest --coverage",
     "test:watch": "npm run test -- --watch",
     "build": "NODE_ENV=production ./build-tools/build.sh",
-    "compile": "NODE_ENV=production webpack --config build-tools/webpack.config.prod.js --progress",
+    "umd": "NODE_ENV=production webpack --config build-tools/webpack.config.prod.js --progress",
     "buildSite": "NODE_ENV=production webpack --config build-tools/webpack.config.site.js --progress",
-    "prepublish": "npm run build && npm run compile"
+    "prepublish": "npm run build && npm run umd"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gregchamberlain/react-component-boilerplate.git"
+    "url": "git+https://github.com/gregchamberlain/react-layout-plugin-edit.git"
   },
   "author": "Greg Chamberlain <gregchamberlain94@gmail.com> (https://gregchamberlain.github.io)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/gregchamberlain/react-component-boilerplate/issues"
+    "url": "https://github.com/gregchamberlain/react-layout-plugin-edit/issues"
   },
-  "homepage": "https://github.com/gregchamberlain/react-component-boilerplate#readme",
+  "homepage": "https://github.com/gregchamberlain/react-layout-plugin-edit#readme",
   "devDependencies": {
     "babel-cli": "^6.14.0",
     "babel-core": "^6.5.2",
