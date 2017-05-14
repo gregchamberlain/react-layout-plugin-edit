@@ -12,13 +12,16 @@ const Reducer = (layoutstate: LayoutState) => (state: LayoutState = layoutstate,
       if (action.item.id) {
         // Item already exists, MOVE_ITEM
         const oldParent = state.getItem(action.item.id).parent; 
-        action.item.parent = action.parentId;
+        // action.item.parent = action.parentId;
         nextState = state
           .updateIn(['items', oldParent], item => update(item, {
             children: { $apply: c => c.filter(cId => cId !== action.item.id) }
           }))
           .updateIn(['items', action.parentId], item => update(item, {
             children: { $splice: [[action.idx, 0, action.item.id]] }
+          }))
+          .updateIn(['items', action.item.id], item => update(item, {
+            parent: { $set: action.parentId }
           }));
       } else {
         // Item doesnt exist, INSERT_ITEM
