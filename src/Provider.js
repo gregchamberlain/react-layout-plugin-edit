@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
+import { connectLayout } from 'react-layout-core';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 
 const Provider = (WrappedComponent: Function) => {
@@ -24,7 +24,7 @@ const Provider = (WrappedComponent: Function) => {
     nextLayoutState
   });
 
-  return connect(mapStateToProps)(EditProvider);
+  return connectLayout(mapStateToProps)(EditProvider);
 }
 
 export default Provider;
