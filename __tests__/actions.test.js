@@ -1,45 +1,62 @@
 import * as ACTIONS from '../src/actions';
-import { LayoutState } from 'react-layout-core';
+import { LayoutState, Item, ItemKey } from 'react-layout-core';
 
-describe('Edit Plugin Action Creators', () => {
+const Key = (key) => ({ key });
 
-  describe('setLayoutState', () => {
-    it('should create an action to set the layoutState', () => {
-      const state = new LayoutState('span');
-      const action = ACTIONS.setLayoutState(state);
-      expect(action).toEqual({ type: ACTIONS.SET_LAYOUT_STATE, layoutState: state });
-    });
-  });
+const items = {
+  root: { key: 'root', type: 'div', props: {}, children: [Key('a'), Key('b')] },
+  a: { key: 'a', type: 'div', props: {}, children: [Key('c')], parent: 'root' },
+  b: { key: 'b', type: 'div', props: {}, children: [], parent: 'root' },
+  c: { key: 'c', type: 'div', props: {}, children: [Key('d')], parent: 'a' },
+  d: { key: 'd', type: 'div', props: {}, children: [], parent: 'c' }
+}
 
-  describe('insertOrMoveItem', () => {
-    it('should create an action to insert or insert and item', () => {
-      const item = { id: '1', props: {}, children: [] };
-      const action = ACTIONS.insertOrMoveItem('root', 0, item);
-      expect(action).toEqual({
-        type: ACTIONS.INSERT_OR_MOVE_ITEM,
-        parentId: 'root',
-        idx: 0,
-        item
-      });
-    });
-  });
+let layoutState;
 
-  describe('updateItem', () => {
-    it('should create an action to update an item', () => {
-      const action = ACTIONS.updateItem('root', { props: { a: { $set: 10 } } });
-      expect(action).toEqual({
-        type: ACTIONS.UPDATE_ITEM,
-        id: 'root',
-        updater: { props: { a: { $set: 10 } } }
-      });
-    });
-  });
+describe('actions', () => {
 
-  describe('removeItem', () => {
-    it('should create an action to remove an item', () => {
-      const action = ACTIONS.removeItem('item1');
-      expect(action).toEqual({ type: ACTIONS.REMOVE_ITEM, id: 'item1' });
-    });
-  });
+  beforeEach(() => {
+    layoutState = LayoutState.fromRaw(items);
+  })
 
+  describe('#insert', () => {
+    it('inserts the item', () => {
+      const item = layoutState.createItem({ type: 'div' });
+      const parentKey = LayoutState.ROOT_KEY;
+      const index = 1;
+      const nextState = ACTIONS.insertOrMoveItem(layoutState, { item, parentKey, index });
+      expect(nextState).toBeInstanceOf(LayoutState);
+      expect(nextState.getIn(['itemMap', item.key, 'key'])).toEqual(item.key);
+      expect(nextState.getIn(['itemMap', parentKey, 'children', index])).toEqual(item.key);
+      expect(nextState.getIn(['itemMap', item.key, 'parent'])).toEqual(parentKey);
+    })
+  })
+  
+  describe('#move', () => {
+    it('moves the item', () => {
+      const itemKey = new ItemKey('c');
+      const parentKey = LayoutState.ROOT_KEY;
+      const oldParentKey = layoutState.getItem(itemKey).parent;
+      const index = 1;
+      const nextState = ACTIONS.insertOrMoveItem(layoutState, { item: itemKey, parentKey, index });
+      expect(nextState).toBeInstanceOf(LayoutState);
+      expect(nextState.getIn(['itemMap', parentKey, 'children', index])).toEqual(itemKey);
+      expect(nextState.getIn(['itemMap', itemKey, 'parent'])).toEqual(parentKey);
+      expect(nextState.getIn(['itemMap', oldParentKey, 'children', 0])).not.toEqual(itemKey);
+    })
+  })
+
+  describe('#remove', () => {
+    it('removes the item', () => {
+      const itemKey = new ItemKey('a');
+      const childKey = new ItemKey('c');
+      const grandChildKey = new ItemKey('d');
+      const nextState = ACTIONS.removeItem(layoutState, itemKey);
+      const expected = [new ItemKey('b')];
+      expect(nextState.getIn(['itemMap', itemKey])).toBeUndefined();
+      expect(nextState.getIn(['itemMap', childKey])).toBeUndefined();
+      expect(nextState.getIn(['itemMap', grandChildKey])).toBeUndefined();
+      expect(nextState.getIn(['itemMap', LayoutState.ROOT_KEY, 'children'])).toEqual(expect.arrayContaining(expected));
+    })
+  })
 });

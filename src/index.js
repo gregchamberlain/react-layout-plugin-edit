@@ -1,12 +1,9 @@
-import reducer from './reducer';
 import Provider from './Provider';
 
-const factory = props => {
-  return {
-    Name: 'nextLayoutState',
-    reducer: reducer(props.layoutState),
-    Provider
-  };
-}
+export * as actions from './actions';
+export withEditLayoutState from './withEditLayoutState';
 
-export default factory;
+export default {
+  Name: 'Edit',
+  Provider
+};

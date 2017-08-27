@@ -3790,9 +3790,9 @@ react-hot-loader@^3.0.0-beta.6:
     redbox-react "^1.2.5"
     source-map "^0.4.4"
 
-react-layout-core@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/react-layout-core/-/react-layout-core-0.4.3.tgz#4872a5c6e9b8e57e425eb3c67fac13296d0cf74e"
+react-layout-core@beta:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-layout-core/-/react-layout-core-0.5.0.tgz#0910cc6354be5b0d4d6d57aa3f89b91fd03c922f"
   dependencies:
     hoist-non-react-statics "^1.2.0"
     immutability-helper "^2.1.2"

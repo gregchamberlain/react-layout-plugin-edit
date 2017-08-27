@@ -1,26 +1,48 @@
 // @flow
 import React, { Component } from 'react';
-import { Layout, LayoutState } from 'react-layout-core';
+import { Layout, LayoutState, LayoutProvider, RootLayout } from 'react-layout-core';
 
-import Edit from '../../src';
+import Edit, { actions } from '../../src';
+import AddItemButton from './AddItemButton';
+import View from './View';
 
-import Comp from './Comp';
+const rVal = () => Math.floor(Math.random() * 255);
 
-const components = {
-  Comp
+const createStyle = () => ({
+  padding: 15,
+  margin: 5,
+  backgroundColor: `rgba(${rVal()}, ${rVal()}, ${rVal()}, 1)`
+});
+
+const Key = (key) => ({ key });
+
+const items = {
+  root: { key: 'root', type: 'View', props: { style: createStyle() }, children: [Key('a'), Key('b')] },
+  a: { key: 'a', type: 'div', props: { style: createStyle() }, children: [], parent: 'root' },
+  b: { key: 'b', type: 'div', props: { style: createStyle() }, children: [], parent: 'root' },
 };
 
-class App extends Component {
-  state: {
-    layoutState: LayoutState
-  }
-  
+const components = {
+  View
+};
+
+type State = {
+  layoutState: LayoutState
+};
+
+type Props = {
+
+}
+
+class App extends Component<Props, State> {
+
   constructor() {
     super();
-    let layoutState = new LayoutState('div');
-    layoutState = layoutState.insertOrMoveItem('root', 0, { type: 'Comp', props: {}, children: [] });
+    // let layoutState = LayoutState.fromRaw(items);
+    let layoutState = new LayoutState('View');
+    console.log(layoutState.toJS());
     this.state = {
-      layoutState: layoutState
+      layoutState
     }
   }
 
@@ -30,12 +52,16 @@ class App extends Component {
 
   render() {
     return (
-      <Layout
-        layoutState={this.state.layoutState}
-        onChange={this.changeLayout}
-        components={components}
-        plugins={[Edit]}
-      />
+        <LayoutProvider
+          layoutState={this.state.layoutState}
+          onChange={this.changeLayout}
+          plugins={[Edit]}
+          components={components}
+        >
+          <div>
+            <RootLayout />
+          </div>
+        </LayoutProvider>
     );
   }
 }

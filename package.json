@@ -49,7 +49,7 @@
     "react-addons-test-utils": "^15.4.2",
     "react-dom": "^15.3.0",
     "react-hot-loader": "^3.0.0-beta.6",
-    "react-layout-core": "^0.4.3",
+    "react-layout-core": "beta",
     "react-test-renderer": "^15.4.2",
     "webpack": "^2.2.0",
     "webpack-dev-server": "^2.2.0"
