@@ -2404,12 +2404,6 @@ ignore@^3.2.0:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-3.2.4.tgz#4055e03596729a8fabe45a43c100ad5ed815c4e8"
 
-immutability-helper@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/immutability-helper/-/immutability-helper-2.1.2.tgz#734506440d7209b74664dcadaa8ba14e73f2185b"
-  dependencies:
-    invariant "^2.2.0"
-
 immutable@^3.8.1:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
@@ -3790,12 +3784,11 @@ react-hot-loader@^3.0.0-beta.6:
     redbox-react "^1.2.5"
     source-map "^0.4.4"
 
-react-layout-core@beta:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/react-layout-core/-/react-layout-core-0.5.0.tgz#0910cc6354be5b0d4d6d57aa3f89b91fd03c922f"
+react-layout-core@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/react-layout-core/-/react-layout-core-0.5.2.tgz#1d545470f87f1ce467ebd376aa959c6fc72c06f1"
   dependencies:
     hoist-non-react-statics "^1.2.0"
-    immutability-helper "^2.1.2"
     immutable "^3.8.1"
     prop-types "^15.5.10"
     react-redux "^5.0.5"
