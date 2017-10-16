@@ -14,12 +14,29 @@ const Provider = (WrappedComponent) => {
 
     constructor(props) {
       super();
-      props.setOnChange(props.onChange);
+      this.nextState = props.layoutState;
+      this.animationFrameRequested = false;
+      props.setOnChange(this.onChange);
     }
 
-    componentWillReceiveProps(props) {
-      if (props.onChange !== this.props.onChange) {
-        this.props.setOnChange(props.onChange);
+    componenentDidReceiveProps(nextProps) {
+      if (this.props.layoutState !== nextProps.layoutState) {
+        this.nextState = nextProps.layoutState;
+      }
+    }
+
+    onChange = (callback) => {
+      this.nextState = callback(this.nextState);
+      if (!this.animationFrameRequested) {
+        window.requestAnimationFrame(this.onAnimationFrame);
+        this.animationFrameRequested = true;
+      }
+    }
+
+    onAnimationFrame = () => {
+      this.animationFrameRequested = false;
+      if (this.props.layoutState !== this.nextState) {
+        this.props.onChange(this.nextState);
       }
     }
 
