@@ -43,6 +43,7 @@ const Provider = (WrappedComponent) => {
     onChange = (callback) => {
       if (this.props.layoutState === this.nextState) {
         this.nextState = callback(this.nextState);
+        this.props.onChange(this.nextState);
       } else {
         this.pendingChanges.push(callback);
       }
