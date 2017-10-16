@@ -12,31 +12,39 @@ const Provider = (WrappedComponent) => {
 
   class EditProvider extends Component {
 
+    pendingChanges = [];
+
     constructor(props) {
       super();
       this.nextState = props.layoutState;
-      this.animationFrameRequested = false;
       props.setOnChange(this.onChange);
     }
 
-    componenentDidReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
       if (this.props.layoutState !== nextProps.layoutState) {
+        if (nextProps.layoutState === this.nextState) {
+          this.applyPendingChanges();
+        } else {
+          this.pendingChanges = [];
+        }
         this.nextState = nextProps.layoutState;
       }
     }
 
-    onChange = (callback) => {
-      this.nextState = callback(this.nextState);
-      if (!this.animationFrameRequested) {
-        window.requestAnimationFrame(this.onAnimationFrame);
-        this.animationFrameRequested = true;
+    applyPendingChanges = () => {
+      if (!this.pendingChanges.length) return;
+      for (const change of this.pendingChanges) {
+        this.nextState = change(this.nextState);
       }
+      this.pendingChanges = [];
+      this.props.onChange(this.nextState);
     }
 
-    onAnimationFrame = () => {
-      this.animationFrameRequested = false;
-      if (this.props.layoutState !== this.nextState) {
-        this.props.onChange(this.nextState);
+    onChange = (callback) => {
+      if (this.props.layoutState === this.nextState) {
+        this.nextState = callback(this.nextState);
+      } else {
+        this.pendingChanges.push(callback);
       }
     }
 
